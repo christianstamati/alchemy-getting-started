@@ -11,7 +11,7 @@ export default class Api extends Lambda.Function<Api>()(
   Stack.useSync((stack) => ({
     main: import.meta.url,
     functionUrl: true,
-    memory: stack.stage === "prod" ? 1024 : 512,
+    memorySize: stack.stage === "prod" ? 1024 : 512,
   })),
   Effect.gen(function* () {
     const bucket = yield* S3.Bucket("Bucket", {
