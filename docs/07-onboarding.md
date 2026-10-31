@@ -59,6 +59,14 @@ Add `Platform` only if they need `production`.
 aws sso login --sso-session mario
 ```
 
+Code against the local emulator, on its own stage:
+
+```bash
+bun alchemy dev --stage local-mario-rossi
+```
+
+Deploy to real AWS when you need to test there:
+
 ```bash
 bun alchemy deploy
 ```

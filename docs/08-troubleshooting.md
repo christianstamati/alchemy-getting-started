@@ -53,6 +53,8 @@ Root can't switch roles. Use the SSO portal, or sign in as an IAM user if you ha
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
+| `alchemy dev` deleted a real bucket or Lambda | It shared a stage with a real deployment | Use `--stage local-<name>` |
+| `alchemy dev` created resources in `us-east-1` | The emulator's region is hardcoded | Nothing. It's local only |
 | Lambda has 128 MB | `memory` was used | Use `memorySize` |
 | Renaming the stack created a new bucket | The stack name is its identity | Destroy the old stack, using the old name in code temporarily |
 | A second copy appeared | The stage changed | `bun alchemy destroy --stage <old>` |

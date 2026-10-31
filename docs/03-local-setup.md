@@ -124,6 +124,8 @@ ALCHEMY_TEST_STAGE=test-christian-stamati
 
 `.env` is ignored by Git and only needs setting once per machine. Without it, Alchemy falls back to `live_<username>` and `test_<username>`.
 
+Pass `--stage local-<name>` to `bun alchemy dev`, or it will replace your real `dev-<name>` copy. See [Local development](04-alchemy-stack.md#local-development).
+
 Always pass `--stage` for production. Otherwise `--profile production` alone would deploy a copy named after your dev stage into the production account.
 
 ## Where configuration lives

@@ -43,7 +43,7 @@ aws s3 rm s3://alchemy-assets-<ACCOUNT_ID>-eu-central-1-an/lambda/ --recursive -
 | `bun alchemy plan` | Previews changes |
 | `bun alchemy deploy` | Applies changes after confirmation |
 | `bun alchemy destroy` | Removes the stage's resources |
-| `bun alchemy dev` | Runs with live reload |
+| `bun alchemy dev --stage local-<name>` | Runs in a local emulator. See below |
 | `bun alchemy logs --tail` | Streams logs |
 | `bun alchemy drift` | Compares the stack with what's deployed |
 | `bun alchemy profile list` | Lists profiles |
@@ -59,6 +59,26 @@ Useful flags are `--stage`, `--profile`, `--yes`, `--dry-run`, `--detailed` and 
 | `--stage` | Which copy of the app | `--stage prod` |
 
 Each stage has its own state and resources, so stages don't affect each other.
+
+## Local development
+
+`alchemy dev` runs the stack in [Floci](https://floci.io), a local AWS emulator in Docker, and swaps code changes into it. It needs Docker running.
+
+> Always give `alchemy dev` its own stage. It also reads `ALCHEMY_STAGE`, and on a stage already deployed to AWS it deletes the real resources and replaces them with local ones. Stage state lives in the real S3 state bucket, so this happens even though the app runs locally.
+
+```bash
+bun alchemy dev --stage local-christian-stamati
+```
+
+| | `bun alchemy dev` | `bun alchemy deploy` |
+| --- | --- | --- |
+| Runs on | Your machine | Real AWS |
+| Region | Always `us-east-1` | `eu-central-1` |
+| Account | Dummy `000000000000` | `development` |
+| URL | `localhost:4566` | Public function URL |
+| Use for | Fast coding loop | Testing real IAM, Lambda and URLs |
+
+The emulator's region is hardcoded and has no effect on real deploys. An emulator isn't identical to AWS, so check changes on real AWS before merging. The `--stage local-<name>` pattern hasn't been tested here yet.
 
 ## Identity and naming
 

@@ -63,6 +63,7 @@ flowchart LR
 
 | Stage | Deployed by | Credentials | Removed by |
 | --- | --- | --- | --- |
+| `local-<name>` | `bun alchemy dev`, in a local emulator | SSO, for state only | `bun alchemy destroy --stage local-<name>` |
 | `dev-<name>` | Developer | SSO | `bun alchemy destroy` |
 | `test-<name>` | `bun test` | SSO | `bun alchemy destroy --stage test-<name>` |
 | `pr-<number>` | GitHub Actions | OIDC role | Closing the PR |
