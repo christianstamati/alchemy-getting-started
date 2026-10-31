@@ -3,8 +3,12 @@ name: Deploy
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
   pull_request:
     types: [opened, reopened, synchronize, closed]
+    paths-ignore:
+      - "docs/**"
 
 concurrency:
   group: deploy-${{ github.ref }}
