@@ -37,7 +37,7 @@ export default Alchemy.Stack(
               },
               StringLike: {
                 "token.actions.githubusercontent.com:sub":
-                  "repo:christianstamati/alchemy-getting-started:*",
+                  "repo:christianstamati@48362853/alchemy-getting-started@1440759436:*",
               },
             },
           },
