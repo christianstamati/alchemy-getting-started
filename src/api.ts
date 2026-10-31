@@ -14,8 +14,9 @@ export default class Api extends Lambda.Function<Api>()(
     memorySize: stack.stage === "prod" ? 1024 : 512,
   })),
   Effect.gen(function* () {
+    const { stage } = yield* Stack;
     const bucket = yield* S3.Bucket("Bucket", {
-      forceDestroy: true,
+      forceDestroy: stage !== "prod",
     });
     const putObject = yield* S3.PutObject(bucket);
     const getObject = yield* S3.GetObject(bucket);
