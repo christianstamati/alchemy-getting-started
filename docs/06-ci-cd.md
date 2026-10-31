@@ -17,6 +17,26 @@ GitHub Actions deploys with short-lived credentials through OIDC, so no AWS keys
 | `stacks/github-prod.ts` | OIDC provider, prod role, approval environment | Once, from a laptop |
 | `.github/workflows/deploy.yml` | Deploys and cleanup | On every event |
 
+## The stacks folder
+
+`stacks/` holds CI setup, not the app. These are separate stacks with their own state, and `bun alchemy deploy` never touches them. The folder name is only a convention.
+
+| | `alchemy.run.ts` | `stacks/*` |
+| --- | --- | --- |
+| Stack | `Pluto` | `github`, `github-prod` |
+| Creates | App resources | OIDC provider, IAM role, GitHub variables and environment |
+| Deployed | All the time, per stage | Once per account, then rarely |
+| Deployed by | CI or a developer | An admin, from a laptop |
+
+They're kept apart because:
+
+- CI needs the role before it can deploy anything.
+- A role exists once per account, while previews would each try to create it.
+- Creating IAM roles needs admin access.
+- Destroying the app shouldn't remove CI access.
+
+Each account needs its own role, which is why there are two files.
+
 ## Setup
 
 1. Create the GitHub repo and note its numeric IDs:
@@ -45,7 +65,44 @@ GitHub Actions deploys with short-lived credentials through OIDC, so no AWS keys
 
 7. Push to `main`.
 
-Variables hold no secrets. Only re-run the stack files when changing a role or the environment.
+Only re-run the stack files when changing a role or the environment.
+
+## Repository variables
+
+Values live in GitHub, under **Settings → Secrets and variables → Actions → Variables**, not in the code or AWS.
+
+```bash
+GH_PAGER=cat gh variable list --repo <OWNER>/<REPO>
+```
+
+| Where | Holds |
+| --- | --- |
+| GitHub repo settings | The value |
+| `stacks/*.ts` | The definition |
+| Alchemy state in S3 | A record that Alchemy created it |
+| `deploy.yml` | Reads it as `${{ vars.AWS_ROLE_ARN }}` |
+
+Change variables in the stack file, not the settings page, so Alchemy's state stays correct.
+
+Variables are for non-sensitive values and can appear in logs. Secrets are hidden. A role ARN or region isn't sensitive, so no AWS secrets are stored in GitHub.
+
+## Removing CI
+
+Roles are safe to leave idle, as they cost nothing and hold no keys. To remove one, destroy its stack rather than using the console:
+
+```bash
+GITHUB_TOKEN="$(gh auth token)" bun alchemy destroy --config stacks/github.ts --profile admin --stage github
+```
+
+```bash
+GITHUB_TOKEN="$(gh auth token)" bun alchemy destroy --config stacks/github-prod.ts --profile production --stage github
+```
+
+`bun alchemy destroy` on the app won't remove these. Check the plan lists only the stack's resources before confirming.
+
+Removing the development stack removes `AWS_ROLE_ARN` and `AWS_REGION`, which breaks previews and `staging`. It also blocks `prod`, because `deploy-prod` needs the `deploy` job and uses `AWS_REGION`. Live apps keep running.
+
+Update `deploy.yml` afterwards, or those workflows will fail at AWS sign-in. To restore a role, run its `deploy` command again.
 
 ## OIDC subject
 

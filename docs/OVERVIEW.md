@@ -124,6 +124,7 @@ Follow these in order for a new setup:
 
 ## Known gaps
 
+- **The development CI role is currently removed.** Previews, `staging` and CI `prod` deploys will fail until you redeploy `stacks/github.ts`. See [CI/CD](06-ci-cd.md).
 - **The API has no authentication.** Anyone with a function URL can read and write that stage's bucket, and this public repo's Actions logs contain those URLs. Do not store real data until this is fixed.
 - **The CI roles use `AdministratorAccess`.** Replace them with narrower policies.
 - **`prod` has no deletion guard beyond `forceDestroy: false`.** Consider `RemovalPolicy.retain()` for production data.
