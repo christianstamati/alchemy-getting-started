@@ -106,7 +106,7 @@ This repo is currently a single package. As the project grows, use Bun workspace
 | `src/api.ts` | `apps/api/src/api.ts` |
 | `test/integ.test.ts` | `apps/api/test/integ.test.ts` |
 
-This layout is a recommendation and has not been built or tested yet.
+This layout is a recommendation and has not been built or tested yet. Apps don't each need an `alchemy.run.ts`, because the root file can deploy them all. See [Monorepo](09-monorepo.md).
 
 ## Guides
 
@@ -120,6 +120,7 @@ Follow these in order for a new setup:
 6. [CI/CD](06-ci-cd.md)
 7. [Onboarding a developer](07-onboarding.md)
 8. [Troubleshooting](08-troubleshooting.md)
+9. [Monorepo](09-monorepo.md)
 
 ## Known gaps
 
