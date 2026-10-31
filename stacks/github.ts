@@ -46,7 +46,7 @@ export default Alchemy.Stack(
       managedPolicyArns: ["arn:aws:iam::aws:policy/AdministratorAccess"],
     });
 
-    const region = yield* AWS.Region;
+    const region = yield* yield* AWS.Region;
 
     yield* GitHub.Variable("aws-role-arn", {
       owner: "christianstamati",
