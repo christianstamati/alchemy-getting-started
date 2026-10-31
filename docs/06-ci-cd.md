@@ -1,9 +1,9 @@
 # CI/CD
 
-> CI is currently turned off. This guide describes the full setup. To restore it, bootstrap both accounts, follow Setup below, and recover the workflow from Git history:
+> CI is currently turned off. The workflow file is kept, but disabled on GitHub. This guide describes the full setup. To restore it, bootstrap both accounts, follow Setup below, then enable the workflow:
 >
 > ```bash
-> mkdir -p .github/workflows && git show 41ac010:.github/workflows/deploy.yml > .github/workflows/deploy.yml
+> gh workflow enable Deploy --repo <OWNER>/<REPO>
 > ```
 
 GitHub Actions deploys with short-lived credentials through OIDC, so no AWS keys are stored in GitHub.
