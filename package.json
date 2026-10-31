@@ -1,0 +1,23 @@
+{
+  "name": "alchemy-getting-started",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "typecheck": "bun check"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "@alchemy.run/aws": "^2.0.0-beta.84",
+    "@alchemy.run/github": "2.0.0-beta.84",
+    "@effect/platform-bun": "^4.1.0",
+    "@effect/platform-node": "^4.1.0",
+    "alchemy": "^2.0.0-beta.84",
+    "effect": "^4.1.0"
+  }
+}
